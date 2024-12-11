@@ -1,22 +1,23 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import "../utils/navBar.css";
 
 const NavBar = ({ user }) => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark  sticky-top ">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
       <NavLink className="navbar-brand" to="/">
         Community
       </NavLink>
       <button
-        class="navbar-toggler"
+        className="navbar-toggler"
         type="button"
         data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
+        data-target="#navbarColor03"
+        aria-controls="navbarColor03"
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
-        <span class="navbar-toggler-icon"></span>
+        <span className="navbar-toggler-icon"></span>
       </button>
 
       <div className="collapse navbar-collapse row" id="navbarColor03">
@@ -49,15 +50,27 @@ const NavBar = ({ user }) => {
           )}
           {user && (
             <React.Fragment>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/me">
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdown"
+                  role="button"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
                   Hi {user.username}
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/users/logout">
-                  LogOut
-                </NavLink>
+                </a>
+                <div className="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <span className="dropdown-item" to="/me">
+                    Profile
+                  </span>
+                  <div className="dropdown-divider"></div>
+                  <NavLink className="dropdown-item" to="/users/logout">
+                    Logout
+                  </NavLink>
+                </div>
               </li>
             </React.Fragment>
           )}

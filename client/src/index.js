@@ -4,16 +4,18 @@ import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
-
-
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/css/bootstrap.min.css"; // for Bootstrap styles
+import "jquery";
+import "popper.js";
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
-    </BrowserRouter>,
+    </BrowserRouter>
+    ,
   </React.StrictMode>,
   document.getElementById("root")
 );

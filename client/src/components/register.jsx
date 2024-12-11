@@ -2,16 +2,18 @@ import React from "react";
 import Input from "./common/input";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import * as userService from "../services/userService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/react-toastify.esm";
+import "../utils/Register.css";
 
 class Register extends Form {
   state = {
     data: { username: "", email: "", password: "", password2: "", name: "" },
     errors: { username: "", email: "", password: "", password2: "", name: "" },
   };
+
   schema = {
     name: Joi.string().required().label("Full Name"),
     username: Joi.string().required().label("Username"),
@@ -19,35 +21,35 @@ class Register extends Form {
     password: Joi.string().required().label("Password"),
     password2: Joi.string().required().label("Confirm Password"),
   };
+
   doSubmit = async () => {
     try {
       const response = await userService.register(this.state.data);
-      console.log(response);
       localStorage.setItem("token", response.headers["x-auth-token"]);
       window.location = "/dashboard";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
-        //const errors = { ...this.state.errors };
         toast.error("User Already Registered");
-        // this.setState({ errors });
       }
     }
   };
+
   render() {
     const { data, errors } = this.state;
     if (localStorage.getItem("token")) {
       return <Redirect to="/dashboard" />;
     }
+
     return (
       <React.Fragment>
         <ToastContainer />
-        <div className="container-fluid col-lg-4 col-md-8">
-          <h1>Register</h1>
-          <form onSubmit={this.handleSubmit}>
+        <div className="register-container">
+          <h1 className="text-center mb-4">Create an Account</h1>
+          <form onSubmit={this.handleSubmit} className="login-form">
             <Input
               value={data.name}
               onChange={this.handleChange}
-              label="Name"
+              label="Full Name"
               name="name"
               type="text"
               error={errors.name}
@@ -63,8 +65,8 @@ class Register extends Form {
             <Input
               value={data.email}
               onChange={this.handleChange}
-              label="Email ID"
-              type="text"
+              label="Email Address"
+              type="email"
               name="email"
               error={errors.email}
             />
@@ -85,11 +87,17 @@ class Register extends Form {
               error={errors.password2}
             />
             <div className="d-grid gap-2">
-              <button className="btn btn-primary" disabled={this.validate()}>
+              <button
+                className="btn btn-primary register-btn"
+                disabled={this.validate()}
+              >
                 Register
               </button>
             </div>
           </form>
+          <div className="container col-lg-3 col-md-6 border rounder mt-1 p-3 text-center">
+            Existing user?<Link to="/users/login">Login Here</Link>
+          </div>
         </div>
       </React.Fragment>
     );

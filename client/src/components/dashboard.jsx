@@ -16,6 +16,7 @@ class Dashboard extends Component {
     tags: [],
     selectedTag: { _id: "1", name: "All Posts" },
   };
+
   async componentDidMount() {
     const { data: allposts } = await http.get(api.postsEndPoint);
     const { data: tags } = await http.get(api.tagsEndPoint);
@@ -31,13 +32,17 @@ class Dashboard extends Component {
       ],
     });
   }
+
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
   };
+
   handlePostDelete = (post) => {};
+
   handleTagSelect = (tag) => {
     this.setState({ selectedTag: tag, currentPage: 1 });
   };
+
   getPosts() {
     const { allposts, selectedTag } = this.state;
     const filtered = [];
@@ -51,16 +56,29 @@ class Dashboard extends Component {
         }
       }
     }
-    console.log(filtered);
     return filtered;
   }
+
   render() {
     const { user } = this.props;
     const { allposts, pageSize, currentPage, tags, selectedTag } = this.state;
     const filtered = selectedTag._id === "1" ? allposts : this.getPosts();
     const posts = paginate(filtered, currentPage, pageSize);
+
     if (allposts.length === 0)
-      return <p>There are no posts in the database!</p>;
+      return (
+        <div className="no-posts-container">
+          <p className="no-posts-text">There are no posts in the database!</p>
+          {user && (
+            <Link to="/new-post">
+              <button type="button" className="btn btn-success new-post-btn">
+                Create a Post
+              </button>
+            </Link>
+          )}
+        </div>
+      );
+
     return (
       <React.Fragment>
         <Jumotron />
@@ -68,13 +86,14 @@ class Dashboard extends Component {
           <div className="row">
             <div className="col">
               <div className="d-flex w-100 justify-content-between m-3">
-                Showing {filtered.length} posts.
+                <span className="posts-count">
+                  Showing {filtered.length} posts.
+                </span>
                 {user && (
                   <Link to="/new-post">
                     <button
                       type="button"
-                      class="btn btn-success"
-                      style={{ marginBottom: 20 }}
+                      className="btn btn-primary new-post-btn"
                     >
                       New Post
                     </button>

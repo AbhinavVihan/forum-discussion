@@ -1,0 +1,9 @@
+.login-container {
+  display: flex; /* Center the form and registration link horizontally */
+  justify-content: center;
+}
+
+.login-form,
+.register-link {
+  margin: 10px; /* Add some margin between form and link */
+}

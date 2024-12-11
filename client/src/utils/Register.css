@@ -1,0 +1,39 @@
+/* Register.css */
+
+.register-container {
+  width: 400px;
+  margin: 50px auto;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.register-form {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.d-grid.gap-2 {
+  /* Assuming Bootstrap usage */
+  display: grid;
+  grid-gap: 10px;
+}
+
+.register-btn {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+.register-btn:hover {
+  background-color: #0062cc;
+  border-color: #0062cc;
+}

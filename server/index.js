@@ -11,11 +11,14 @@ const tags = require("./routes/tags");
 const replies = require("./routes/replies");
 const app = express();
 
-
+const DB = process.env.mongoDBURL.replace(
+  "<db_password>",
+  process.env.DATABASE_PASSWORD
+);
 let mongoDBURL = process.env.mongoDBURL;
 
 mongoose
-  .connect(mongoDBURL, {
+  .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
