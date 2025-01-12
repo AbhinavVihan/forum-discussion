@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+spec:
+  replicas: 2  # Scale to 2 replicas for redundancy and load balancing
+  selector:
+    matchLabels:
+      app: client  # Selector to match the client pods
+  template:
+    metadata:
+      labels:
+        app: client  # Label to identify the client pods
+    spec:
+      containers:
+        - name: client
+          # Replace 'client' with the actual image name from your registry
+          image: abhik0/discussion-forum:client_latest  # e.g., username/react-app:latest
+          ports:
+            - containerPort: 80  # Port the client app is listening on (Nginx serving on port 80)
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  selector:
+    app: client  # Selector to match the client pods
+  ports:
+    - protocol: TCP
+      port: 80  # The port exposed externally by the service
+      targetPort: 80  # The port the container listens on (same as containerPort)
+      # nodePort: 80  # The port on the node (for local access), you can change this port number
+  type: LoadBalancer  # Expose the service via NodePort (useful for local development)

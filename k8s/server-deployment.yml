@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server
+spec:
+  replicas: 2  # Scale to 2 replicas for redundancy and load balancing
+  selector:
+    matchLabels:
+      app: server  # Selector to match the server pods
+  template:
+    metadata:
+      labels:
+        app: server  # Label to identify the server pods
+    spec:
+      containers:
+        - name: server
+          # Replace <your-docker-image> with the actual image you pushed to your registry
+          image: abhik0/discussion-forum:server_latest # e.g., username/server:latest
+          ports:
+            - containerPort: 5000  # Port the server is listening on (for API)
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: server
+spec:
+  selector:
+    app: server  # Selector to match the server pods
+  ports:
+    - protocol: TCP
+      port: 5000  # The port exposed externally by the service
+      targetPort: 5000  # The port the container listens on (same as containerPort)
+      # nodePort: 30050  # The port on the node (for local access), you can change this port number
+  type: LoadBalancer  # Expose the service via NodePort (useful for local development)
