@@ -1,9 +1,9 @@
 name: Build, Push & Deploy to Kubernetes
 
 on:
-  push:
-    branches:
-      - main  # Change this to the branch you want to trigger the workflow on
+  # push:
+    # branches:
+      # - main  # Change this to the branch you want to trigger the workflow on
   pull_request:
     branches:
       - main
@@ -52,7 +52,7 @@ jobs:
           aws eks --region us-west-2 update-kubeconfig --name mern-cluster
 
       - name: Verify kubectl is working
-        run: kubectl version --short
+        run: kubectl version
 
       - name: Apply Kubernetes Manifests (client and server)
         run: |
