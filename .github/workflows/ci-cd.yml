@@ -61,4 +61,6 @@ jobs:
 
       - name: Verify Kubernetes pods
         run: kubectl get pods
+        
+      - name: Verify Kubernetes service
         run: kubectl get svc
